@@ -174,11 +174,14 @@ public class SplayTree
 //							Splay Function 								  //
 // Splays the tree at int "target" 										  //
 // If a node with that key exists, it is splayed to the root of the tree. //
-// If not, the last node along the search path is splayed to the root.	  //
+// If not, the Predecessor of the target is splayed to the root 		  //
 //========================================================================//
 	public BTNode<Integer> splay(int target)
 	{
-		treeRoot = splay(treeRoot,target);
+		if (isEmpty())
+			return null;
+
+		treeRoot = splay(treeRoot,predecessor(target));
 		return treeRoot;
 	}
 	private BTNode<Integer> splay(BTNode<Integer> root, int target)
@@ -229,6 +232,33 @@ public class SplayTree
 		}
 
 		else return root;
+	}
+
+	private int predecessor(int target)
+	{
+		int predecessor = 0;
+		BTNode<Integer> cursor = treeRoot;
+
+		while (true) {
+			if (cursor.getData() < target && cursor.getData() > predecessor)
+				predecessor = cursor.getData();
+			System.out.println(predecessor);
+
+			if (target > cursor.getData()) {
+				if (cursor.getRight() != null)
+					cursor = cursor.getRight();
+				else
+					return predecessor;
+			}
+			else if (target < cursor.getData()) {
+				if (cursor.getLeft() != null)
+					cursor = cursor.getLeft();
+				else 
+					return predecessor;
+			}
+			else if (target == cursor.getData())
+				return target;	
+		}
 	}
 
 //========================================================================//
